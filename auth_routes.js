@@ -45,7 +45,12 @@ export default async function(fastify, opts, done){
             const token = fastify.jwt.sign(body)
             const date =new Date()
             date.setDate(date.getDate()+7)
-            return reply.setCookie('jwt',token,{signed: true,httpOnly:true, path:'/',secure:env=='prod'?true:false,expires:date}).code(200).send()
+            let cookie_options = {signed: true,httpOnly:true, path:'/',secure:env=='prod'?true:false,expires:date}
+            if(env=='prod'){
+                cookie_options.secure = true
+                cookie_options.domain = 'satyam.life'
+            }
+            return reply.setCookie('jwt',token,).code(200).send()
         }else{
             const error = 'Invalid password!'
             return reply.code(401).send({message:error})
