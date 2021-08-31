@@ -6,7 +6,7 @@ import cookies from 'fastify-cookie'
 import fastify_fw from 'fastify'
 import cors from 'fastify-cors'
 const fastify = fastify_fw({ logger: true })
-
+const env = process.argv[2]=='prod'?'prod':'dev'
   
 fastify.register(jwt, {
   secret: uuid(),
@@ -23,7 +23,7 @@ fastify.register(cookies, {
 })
 
 
-fastify.register(cors, {origin:'http://localhost:3000',credentials:true,methods:['GET','POST']})
+fastify.register(cors, {origin:env=='prod'?'https://expense.satyam.life':'http://localhost:3000',credentials:true,methods:['GET','POST']})
   
 fastify.register(auth_routes)
 fastify.register(protected_routes)
