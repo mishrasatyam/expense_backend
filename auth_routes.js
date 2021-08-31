@@ -43,12 +43,13 @@ export default async function(fastify, opts, done){
         }else if(result.hashed_password == sha512(password.toString(),result.salt).hashed_password ){    
             const body = {username,db_name:result.db_name}
             const token = fastify.jwt.sign(body)
-            const date =new Date()
+            let date =new Date()
             date.setDate(date.getDate()+7)
             let cookie_options = {signed: true,httpOnly:true, path:'/'}
             if(env=='prod'){
                 cookie_options.secure = true
                 cookie_options.domain = '.satyam.life'
+                cookie_options.expires = date
             }
             return reply.setCookie('jwt',token,cookie_options).code(200).send()
         }else{
