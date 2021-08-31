@@ -35,11 +35,12 @@ export default async function(fastify, opts, done){
         const {username,password} = request.body;
         const result = await database.collection('user').findOne({username}).catch((err)=>{request.log.info('Error while looking inside user collection!')})  
         await mongo_connect.close();
+        console.log(result)
         if(result==null){
             const error = 'User does not exists!'
             return reply.code(401).send({message:error})
         }else if(result.hashed_password == sha512(password.toString(),result.salt).hashed_password ){    
-            const body = {username}
+            const body = {username,db_name:result.db_name}
             const token = fastify.jwt.sign(body)
             return reply.setCookie('jwt',token,{signed: true,httpOnly:true, path:'/'}).code(200).send()
         }else{
@@ -55,7 +56,8 @@ export default async function(fastify, opts, done){
         const database = await mongo_connect.db(db_name)
         const result = await database.collection('user').countDocuments({username}).catch((err)=>{request.log.info('Error while counting user collection');throw err})
         if(result==0){
-            await database.collection('user').insertOne({username,salt,hashed_password}).catch((err)=>{request.log.info('Error while inserting to user collection!');throw err});  
+            const db_name = username.replaceAll(' ','')
+            await database.collection('user').insertOne({username,salt,hashed_password,db_name}).catch((err)=>{request.log.info('Error while inserting to user collection!');throw err});  
             await mongo_connect.close();
             return reply.code(200).send();
         }

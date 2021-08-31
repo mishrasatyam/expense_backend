@@ -4,7 +4,7 @@ import auth_routes from './auth_routes.js'
 import protected_routes from './protected_routes.js'
 import cookies from 'fastify-cookie'
 import fastify_fw from 'fastify'
-
+import cors from 'fastify-cors'
 const fastify = fastify_fw({ logger: true })
 
   
@@ -23,9 +23,9 @@ fastify.register(cookies, {
 })
 
 
-// fastify.register(cors, {credentials:false,origin:'http://localhost:3000'})
+fastify.register(cors, {origin:'http://localhost:3000',credentials:true,methods:['GET','POST']})
   
-// fastify.register(auth_routes)
+fastify.register(auth_routes)
 fastify.register(protected_routes)
 // Run the server!
 

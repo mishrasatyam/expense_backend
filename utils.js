@@ -11,7 +11,7 @@ export function genSalt(length){
 
 export function sha512(password, salt){
     let hash = createHmac('sha512', salt); /** Hashing algorithm sha512 */
-    hash.update(passport);
+    hash.update(password);
     let hashed_password = hash.digest('hex');
     return {salt,hashed_password};
 };
