@@ -48,7 +48,7 @@ export default async function(fastify, opts, done){
             let cookie_options = {signed: true,httpOnly:true, path:'/',secure:env=='prod'?true:false,expires:date}
             if(env=='prod'){
                 cookie_options.secure = true
-                cookie_options.domain = 'satyam.life'
+                cookie_options.domain = '.satyam.life'
             }
             return reply.setCookie('jwt',token,).code(200).send()
         }else{
