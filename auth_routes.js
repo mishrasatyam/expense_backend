@@ -1,5 +1,6 @@
 import {MongoClient} from 'mongodb';
 import {db_name,mongo_url,sha512,genSalt  } from './utils.js';
+const env = process.argv[2]=='prod'?'prod':'dev'
 
 const loginBodyJsonSchema = {
     type: 'object',
@@ -42,7 +43,7 @@ export default async function(fastify, opts, done){
         }else if(result.hashed_password == sha512(password.toString(),result.salt).hashed_password ){    
             const body = {username,db_name:result.db_name}
             const token = fastify.jwt.sign(body)
-            return reply.setCookie('jwt',token,{signed: true,httpOnly:true, path:'/'}).code(200).send()
+            return reply.setCookie('jwt',token,{signed: true,httpOnly:true, path:'/',secure:env=='prod'?true:false}).code(200).send()
         }else{
             const error = 'Invalid password!'
             return reply.code(401).send({message:error})
