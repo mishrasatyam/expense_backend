@@ -50,7 +50,7 @@ export default async function(fastify, opts, done){
                 cookie_options.secure = true
                 cookie_options.domain = '.satyam.life'
             }
-            return reply.setCookie('jwt',token,).code(200).send()
+            return reply.setCookie('jwt',token,cookie_options).code(200).send()
         }else{
             const error = 'Invalid password!'
             return reply.code(401).send({message:error})
