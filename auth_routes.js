@@ -1,7 +1,6 @@
 import {MongoClient} from 'mongodb';
-import {db_name,mongo_url,sha512,genSalt  } from './utils.js';
-const env = process.argv[2]=='prod'?'prod':'dev'
-console.log(env)
+import {db_name,mongo_url,sha512,genSalt, env  } from './utils.js';
+
 const loginBodyJsonSchema = {
     type: 'object',
     required: ['username','password'],

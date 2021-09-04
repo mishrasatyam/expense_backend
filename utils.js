@@ -1,6 +1,6 @@
 import {createHmac,randomBytes} from 'crypto'
 
-export const db_name = 'expense'
+export const db_name = 'expense'//change db name
 export const mongo_url = "mongodb://localhost:27017/";
 
 export function genSalt(length){
@@ -16,3 +16,4 @@ export function sha512(password, salt){
     return {salt,hashed_password};
 };
 
+export const env = process.argv[2]=='prod'?'prod':'dev'

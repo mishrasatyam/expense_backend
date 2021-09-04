@@ -5,9 +5,9 @@ import protected_routes from './protected_routes.js'
 import cookies from 'fastify-cookie'
 import fastify_fw from 'fastify'
 import cors from 'fastify-cors'
+import {env} from './utils.js'
 const fastify = fastify_fw({ logger: true })
-const env = process.argv[2]=='prod'?'prod':'dev'
-  
+//change db name in utils.js  
 fastify.register(jwt, {
   secret: uuid(),
   sign:{
@@ -23,7 +23,7 @@ fastify.register(cookies, {
 })
 
 
-fastify.register(cors, {origin:env=='prod'?'https://expense.satyam.life':'http://localhost:3000',credentials:true,methods:['GET','POST']})
+fastify.register(cors, {origin:env=='prod'?['https://expense.satyam.life','https://expensee.satyam.life']:'http://localhost:3000',credentials:true,methods:['GET','POST']})
   
 fastify.register(auth_routes)
 fastify.register(protected_routes)
@@ -38,4 +38,5 @@ const start = async () => {
     process.exit(1)
   }
 }
+
 start()
