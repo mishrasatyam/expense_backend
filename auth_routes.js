@@ -48,7 +48,7 @@ export default async function(fastify, opts, done){
             if(env=='prod'){
                 cookie_options.secure = true
                 cookie_options.domain = 'satyam.life'
-                cookie_options.expires = date
+                // cookie_options.expires = date
             }
             return reply.setCookie('jwt',token,cookie_options).code(200).send()
         }else{
