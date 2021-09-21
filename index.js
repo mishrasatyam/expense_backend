@@ -24,7 +24,7 @@ fastify.register(cookies, {
 })
 
 
-// fastify.register(cors, {origin:env=='prod'?['https://expense.satyam.life','https://expensee.satyam.life']:'http://localhost:3000',credentials:true,methods:['GET','POST']})
+fastify.register(cors, {origin:env=='prod'?['https://expense.satyam.life','https://expensee.satyam.life']:'http://localhost:3000',credentials:true,methods:['GET','POST']})
   
 fastify.register(auth_routes)
 fastify.register(protected_routes)
